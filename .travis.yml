@@ -17,5 +17,5 @@ install:
 script: py.test --cov sigal --cov-report term-missing tests/
 after_success:
     coveralls
-notifications:
-    irc: "chat.freenode.net#sigal"
+#notifications:
+#    irc: "chat.freenode.net#sigal"
