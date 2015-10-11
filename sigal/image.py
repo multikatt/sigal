@@ -245,7 +245,7 @@ def get_exif_tags(data):
             simple['dateobj'] = datetime.strptime(date, '%Y:%m:%d %H:%M:%S')
             dt = simple['dateobj'].strftime('%A, %d. %B %Y')
             simple['datetime'] = dt.decode('utf8') if compat.PY2 else dt
-        except (ValueError, TypeError) as e:
+        except (ValueError, TypeError, AttributeError) as e:
             logger.info(u'Could not parse DateTimeOriginal: %s', e)
 
     if 'GPSInfo' in data:
