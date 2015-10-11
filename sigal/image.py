@@ -224,13 +224,16 @@ def get_exif_tags(data):
                          exc_info=True)
 
     if 'ExposureTime' in data:
-        if isinstance(data['ExposureTime'], tuple):
-            simple['exposure'] = '{0}/{1}'.format(*data['ExposureTime'])
-        elif isinstance(data['ExposureTime'], int):
-            simple['exposure'] = str(data['ExposureTime'])
-        else:
-            logger.info('Unknown format for ExposureTime: %r',
-                        data['ExposureTime'])
+        try:
+            if isinstance(data['ExposureTime'], tuple):
+                simple['exposure'] = '{0}/{1}'.format(*data['ExposureTime'])
+            elif isinstance(data['ExposureTime'], int):
+                simple['exposure'] = str(data['ExposureTime'])
+            else:
+                logger.info('Unknown format for ExposureTime: %r',
+                            data['ExposureTime'])
+        except IndexError as e:
+            logger.info(u'Could not parse ExposureTime: %s', e)
 
     if 'ISOSpeedRatings' in data:
         simple['iso'] = data['ISOSpeedRatings']
