@@ -179,13 +179,18 @@ def get_size(file_path):
 def get_exif_data(filename):
     """Return a dict with the raw EXIF data."""
 
+    logger = logging.getLogger(__name__)
     img = PILImage.open(filename)
     exif = img._getexif() or {}
     data = {TAGS.get(tag, tag): value for tag, value in exif.items()}
 
     if 'GPSInfo' in data:
-        data['GPSInfo'] = {GPSTAGS.get(tag, tag): value
-                           for tag, value in data['GPSInfo'].items()}
+        try:
+            data['GPSInfo'] = {GPSTAGS.get(tag, tag): value
+                            for tag, value in data['GPSInfo'].items()}
+        except AttributeError as e:
+            logger.debug("No valid GPSInfo data found for %s" % filename)
+            del data['GPSInfo']
     return data
 
 
